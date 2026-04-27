@@ -8,11 +8,33 @@ if not ZItemTiers.sid then
     ZItemTiers.sid = ZombRand(1000000)
 end
 
--- Tier probabilities: [Common, Uncommon, Rare, Epic, Legendary]
--- These determine the chance that an item will be assigned each tier when it spawns
--- Values should sum to 1.0 (100%)
--- Epic and Legendary are intentionally very rare
-ZItemTiers.TierProbabilities = {0.80, 0.16, 0.032, 0.0064, 0.0016}
+-- Default tier probabilities (percentages): Uncommon, Rare, Epic, Legendary
+-- Common gets the remainder. Configurable via sandbox options.
+ZItemTiers.DefaultTierChances = {
+    Uncommon  = 16.0,
+    Rare      = 3.2,
+    Epic      = 0.64,
+    Legendary = 0.16,
+}
+
+-- Build TierProbabilities array [Common, Uncommon, Rare, Epic, Legendary] from sandbox options
+-- Called once on first roll, then cached until sandbox options change
+function ZItemTiers.BuildTierProbabilities()
+    local sv = SandboxVars and SandboxVars.ZItemTiers
+    local defaults = ZItemTiers.DefaultTierChances
+
+    local uncommon  = (sv and type(sv.UncommonChance)  == "number" and sv.UncommonChance  or defaults.Uncommon)  / 100.0
+    local rare      = (sv and type(sv.RareChance)      == "number" and sv.RareChance      or defaults.Rare)      / 100.0
+    local epic      = (sv and type(sv.EpicChance)      == "number" and sv.EpicChance      or defaults.Epic)      / 100.0
+    local legendary = (sv and type(sv.LegendaryChance) == "number" and sv.LegendaryChance or defaults.Legendary) / 100.0
+
+    local common = math.max(0, 1.0 - uncommon - rare - epic - legendary)
+
+    ZItemTiers.TierProbabilities = {common, uncommon, rare, epic, legendary}
+    return ZItemTiers.TierProbabilities
+end
+
+ZItemTiers.TierProbabilities = nil -- lazily initialized on first RollT0()
 
 -- Global constants for convenience
 ZItemTiers.CommonIdx = 1
@@ -116,11 +138,12 @@ end
 
 -- Roll a random tier based on tier probabilities, return tier 0-based index
 function ZItemTiers.RollT0()
+    local probs = ZItemTiers.TierProbabilities or ZItemTiers.BuildTierProbabilities()
     local roll = ZombRandFloat(0.0, 1.0)
     local cumulative = 0
     
-    for t0 = 0, #ZItemTiers.TierProbabilities-1 do
-        cumulative = cumulative + ZItemTiers.TierProbabilities[t0+1]
+    for t0 = 0, #probs-1 do
+        cumulative = cumulative + probs[t0+1]
         if roll <= cumulative then
             return t0
         end

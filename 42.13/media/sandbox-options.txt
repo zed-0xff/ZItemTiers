@@ -1,0 +1,38 @@
+VERSION = 1,
+
+option ZItemTiers.UncommonChance
+{
+    type = double,
+    min = 0.0,
+    max = 100.0,
+    default = 16.0,
+    page = ZItemTiers,
+    translation = ZItemTiers_UncommonChance,
+}
+option ZItemTiers.RareChance
+{
+    type = double,
+    min = 0.0,
+    max = 100.0,
+    default = 3.2,
+    page = ZItemTiers,
+    translation = ZItemTiers_RareChance,
+}
+option ZItemTiers.EpicChance
+{
+    type = double,
+    min = 0.0,
+    max = 100.0,
+    default = 0.64,
+    page = ZItemTiers,
+    translation = ZItemTiers_EpicChance,
+}
+option ZItemTiers.LegendaryChance
+{
+    type = double,
+    min = 0.0,
+    max = 100.0,
+    default = 0.16,
+    page = ZItemTiers,
+    translation = ZItemTiers_LegendaryChance,
+}
