@@ -3,17 +3,14 @@ task :default => :build
 MOD_ID   = "ZItemTiers"
 MOD_TYPE = "shared"
 VERSIONS = {
-  "42.13" => "24",
+  "42.13" => "25",
 }
 
 VERSIONS.each do |ver, jdk_ver|
   desc "build for #{ver}"
   task "build:#{ver}" do
     Dir.chdir("java") do
-      env = {
-        "JAVA_HOME" => "/Library/Java/JavaVirtualMachines/openjdk-#{jdk_ver}.jdk/Contents/Home"
-      }
-      sh env, "gradle build -PZVersion=#{ver}"
+      sh "gradle build -PZVersion=#{ver} -PjavaVersion=#{VERSIONS[ver]}"
     end
     dst_dir = "#{ver}/media/java/#{MOD_TYPE}"
     FileUtils.mkdir_p dst_dir

@@ -1,6 +1,5 @@
 package me.zed_0xff.itemtiers;
 
-import me.zed_0xff.zombie_buddy.Accessor;
 import me.zed_0xff.zombie_buddy.Exposer;
 
 import zombie.inventory.InventoryItem;

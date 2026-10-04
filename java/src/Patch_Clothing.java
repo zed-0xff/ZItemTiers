@@ -1,7 +1,6 @@
 package me.zed_0xff.itemtiers;
 
-import me.zed_0xff.zombie_buddy.Accessor;
-import me.zed_0xff.zombie_buddy.Patch;
+import me.zed_0xff.zombie_buddy.annotations.Patch;
 
 import zombie.inventory.types.Clothing;
 

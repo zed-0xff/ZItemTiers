@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'io.github.zed-0xff.zb-gradle-plugin' version '1.0.1'
+    id 'io.github.zed-0xff.zb-gradle-plugin' version '1.0.3'
 }
 
 def osName = System.getProperty("os.name").toLowerCase()
@@ -34,6 +34,12 @@ repositories {
     gradlePluginPortal()
 }
 
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(project.findProperty('javaVersion').toInteger())
+  }
+}
+
 // place all .java files in the 'src' directory
 sourceSets {
     main {
@@ -46,7 +52,6 @@ sourceSets {
 
 // disable annotation processing, JNI headers, and incremental compilation
 tasks.withType(JavaCompile).configureEach {
-    options.annotationProcessorPath = files()
     options.generatedSourceOutputDirectory.set(provider { null })
     options.headerOutputDirectory.set(provider { null })
     options.incremental = false

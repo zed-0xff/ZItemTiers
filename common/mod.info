@@ -1,8 +1,10 @@
 name=Zed's Item Tiers
 id=ZItemTiers
+description=Adds a probability-based item tier system (Common, Uncommon, Rare, Epic, Legendary). Any item can spawn with any tier based on global probabilities. Higher tier items have weight reduction and damage bonuses.
+
 author=Zed
 url=https://github.com/zed-0xff/ZItemTiers
-description=Adds a probability-based item tier system (Common, Uncommon, Rare, Epic, Legendary). Any item can spawn with any tier based on global probabilities. Higher tier items have weight reduction and damage bonuses.
+patreon=https://patreon.com/zed_0xff
 
 require=\zdk
 loadModAfter=\CleanUI,\StarlitLibrary,\TransmogDE,\TooltipLib
@@ -11,5 +13,10 @@ loadlast=true
 poster=poster.png
 icon=Item_Plunger
 
-javaJarFile=media/java/shared/ZItemTiers.jar
 javaPkgName=me.zed_0xff.itemtiers
+
+javaJarFile=media/java/shared/ZItemTiers-2x.jar
+zbVersionMax=2.99.99
+
+javaJarFile1=media/java/shared/ZItemTiers.jar
+zbVersionMin1=3.0.0
