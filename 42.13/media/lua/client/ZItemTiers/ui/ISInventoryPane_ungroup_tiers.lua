@@ -148,6 +148,28 @@ zdk.hook({
 
                 -- Replace itemslist with the ungrouped version
                 self.itemslist = newItemslist
+
+                -- Keep rarity ordering stable after post-sort tier ungrouping.
+                if self.itemSortFunc and ISInventoryPane then
+                    if self.itemSortFunc == ISInventoryPane.itemSortByRarityAsc or
+                        self.itemSortFunc == ISInventoryPane.itemSortByRarityDesc then
+                        if self.searchText and self.searchText ~= "" then
+                            -- Preserve CleanUI search priority: matching rows first, then active sort.
+                            -- Without this, rarity re-sort would undo search bumping and hide matches in-place.
+                            table.sort(self.itemslist, function(a, b)
+                                if a.matchesSearch and not b.matchesSearch then
+                                    return true
+                                end
+                                if not a.matchesSearch and b.matchesSearch then
+                                    return false
+                                end
+                                return self.itemSortFunc(a, b)
+                            end)
+                        else
+                            table.sort(self.itemslist, self.itemSortFunc)
+                        end
+                    end
+                end
             end
         end
     },
